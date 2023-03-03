@@ -22,35 +22,34 @@ NaoLola::NaoLola()
 {
   createPublishers();
   createSubscriptions();
+  packer = std::make_shared<MsgpackPacker>();
 
   // Start receive and send loop
-  receive_thread_ = std::thread(
-    [this]() {
-      while (rclcpp::ok()) {
-        auto recvData = connection.receive();
-        MsgpackParser parsed(recvData.data(), recvData.size());
+  while (rclcpp::ok()) {
+    auto recvData = connection.receive();
+    MsgpackParser parsed(recvData.data(), recvData.size());
 
-        accelerometer_pub->publish(parsed.getAccelerometer());
-        angle_pub->publish(parsed.getAngle());
-        buttons_pub->publish(parsed.getButtons());
-        fsr_pub->publish(parsed.getFSR());
-        gyroscope_pub->publish(parsed.getGyroscope());
-        joint_positions_pub->publish(parsed.getJointPositions());
-        joint_stiffnesses_pub->publish(parsed.getJointStiffnesses());
-        joint_temperatures_pub->publish(parsed.getJointTemperatures());
-        joint_currents_pub->publish(parsed.getJointCurrents());
-        joint_statuses_pub->publish(parsed.getJointStatuses());
-        sonar_pub->publish(parsed.getSonar());
-        touch_pub->publish(parsed.getTouch());
-        battery_pub->publish(parsed.getBattery());
-        robot_config_pub->publish(parsed.getRobotConfig());
+    accelerometer_pub->publish(parsed.getAccelerometer());
+    angle_pub->publish(parsed.getAngle());
+    buttons_pub->publish(parsed.getButtons());
+    fsr_pub->publish(parsed.getFSR());
+    gyroscope_pub->publish(parsed.getGyroscope());
+    joint_positions_pub->publish(parsed.getJointPositions());
+    joint_stiffnesses_pub->publish(parsed.getJointStiffnesses());
+    joint_temperatures_pub->publish(parsed.getJointTemperatures());
+    joint_currents_pub->publish(parsed.getJointCurrents());
+    joint_statuses_pub->publish(parsed.getJointStatuses());
+    sonar_pub->publish(parsed.getSonar());
+    touch_pub->publish(parsed.getTouch());
+    battery_pub->publish(parsed.getBattery());
+    robot_config_pub->publish(parsed.getRobotConfig());
 
-        connection.send(packer->getPacked());
+    connection.send(packer->getPacked());
 
-        // Reset packer
-        packer = std::make_shared<MsgpackPacker>();
-      }
-    });
+    // Reset packer
+    packer = std::make_shared<MsgpackPacker>();
+  }
+
 }
 
 void NaoLola::createPublishers()

@@ -83,10 +83,9 @@ private:
   rclcpp::Subscription<nao_command_msgs::msg::HeadLeds>::SharedPtr head_leds_sub;
   rclcpp::Subscription<nao_command_msgs::msg::SonarUsage>::SharedPtr sonar_usage_sub;
 
-  std::thread receive_thread_;
   Connection connection;
 
-  std::shared_ptr<MsgpackPacker> packer = std::make_shared<MsgpackPacker>();
+  std::shared_ptr<MsgpackPacker> packer;
 };
 
 #endif  // NAO_LOLA__NAO_LOLA_HPP_
