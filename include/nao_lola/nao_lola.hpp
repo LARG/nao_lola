@@ -19,14 +19,13 @@
 #include <memory>
 #include <mutex>
 #include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/imu.hpp"
 #include "nao_sensor_msgs/msg/joint_positions.hpp"
 #include "nao_sensor_msgs/msg/joint_stiffnesses.hpp"
 #include "nao_sensor_msgs/msg/joint_temperatures.hpp"
 #include "nao_sensor_msgs/msg/joint_currents.hpp"
 #include "nao_sensor_msgs/msg/joint_statuses.hpp"
 #include "nao_sensor_msgs/msg/buttons.hpp"
-#include "nao_sensor_msgs/msg/accelerometer.hpp"
-#include "nao_sensor_msgs/msg/gyroscope.hpp"
 #include "nao_sensor_msgs/msg/angle.hpp"
 #include "nao_sensor_msgs/msg/sonar.hpp"
 #include "nao_sensor_msgs/msg/fsr.hpp"
@@ -57,11 +56,10 @@ private:
   void createPublishers();
   void createSubscriptions();
 
-  rclcpp::Publisher<nao_sensor_msgs::msg::Accelerometer>::SharedPtr accelerometer_pub;
+  rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_pub;
   rclcpp::Publisher<nao_sensor_msgs::msg::Angle>::SharedPtr angle_pub;
   rclcpp::Publisher<nao_sensor_msgs::msg::Buttons>::SharedPtr buttons_pub;
   rclcpp::Publisher<nao_sensor_msgs::msg::FSR>::SharedPtr fsr_pub;
-  rclcpp::Publisher<nao_sensor_msgs::msg::Gyroscope>::SharedPtr gyroscope_pub;
   rclcpp::Publisher<nao_sensor_msgs::msg::JointPositions>::SharedPtr joint_positions_pub;
   rclcpp::Publisher<nao_sensor_msgs::msg::JointStiffnesses>::SharedPtr joint_stiffnesses_pub;
   rclcpp::Publisher<nao_sensor_msgs::msg::JointTemperatures>::SharedPtr joint_temperatures_pub;

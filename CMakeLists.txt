@@ -18,6 +18,7 @@ include_directories(
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(nao_sensor_msgs REQUIRED)
 find_package(nao_command_msgs REQUIRED)
 find_package(Boost COMPONENTS system program_options filesystem REQUIRED)
@@ -28,6 +29,7 @@ add_library(msgpack_parser_lib SHARED
 
 ament_target_dependencies(msgpack_parser_lib
   rclcpp
+  sensor_msgs
   nao_sensor_msgs
   Boost)
 
