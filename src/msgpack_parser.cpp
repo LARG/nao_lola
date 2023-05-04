@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cmath>
 #include <vector>
 #include <map>
 #include <string>
@@ -29,11 +30,20 @@ MsgpackParser::MsgpackParser(char data[], int size)
 
 sensor_msgs::msg::Imu MsgpackParser::getImu()
 {
+  // Get filtered angles for gravity correction
+  const float gravity = 9.80665;
+  std::vector<float> angles = unpacked.at("Angles").as<std::vector<float>>();
+  double roll = angles.at(static_cast<int>(LolaEnums::Angles::X));
+  double pitch = angles.at(static_cast<int>(LolaEnums::Angles::Y));
+  // Fill imu message (signs seem to be flipped)
   sensor_msgs::msg::Imu imu;
   std::vector<float> vec = unpacked.at("Accelerometer").as<std::vector<float>>();
-  imu.linear_acceleration.x = vec.at(static_cast<int>(LolaEnums::Accelerometer::X));
-  imu.linear_acceleration.y = vec.at(static_cast<int>(LolaEnums::Accelerometer::Y));
-  imu.linear_acceleration.z = vec.at(static_cast<int>(LolaEnums::Accelerometer::Z));
+  imu.linear_acceleration.x = -vec.at(static_cast<int>(LolaEnums::Accelerometer::X))
+    + gravity * std::sin(pitch);
+  imu.linear_acceleration.y = -vec.at(static_cast<int>(LolaEnums::Accelerometer::Y))
+    - gravity * std::cos(pitch) * std::sin(roll);
+  imu.linear_acceleration.z = -vec.at(static_cast<int>(LolaEnums::Accelerometer::Z))
+    - gravity * std::cos(pitch) * std::cos(roll);
   vec = unpacked.at("Gyroscope").as<std::vector<float>>();
   imu.angular_velocity.x = vec.at(static_cast<int>(LolaEnums::Gyroscope::X));
   imu.angular_velocity.y = vec.at(static_cast<int>(LolaEnums::Gyroscope::Y));
