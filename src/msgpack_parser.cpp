@@ -28,6 +28,16 @@ MsgpackParser::MsgpackParser(char data[], int size)
   unpacked = oh.get().as<std::map<std::string, msgpack::object>>();
 }
 
+nao_sensor_msgs::msg::Accelerometer MsgpackParser::getAccelerometer()
+{
+  nao_sensor_msgs::msg::Accelerometer acc;
+  std::vector<float> vec = unpacked.at("Accelerometer").as<std::vector<float>>();
+  acc.x = vec.at(static_cast<int>(LolaEnums::Accelerometer::X));
+  acc.y = vec.at(static_cast<int>(LolaEnums::Accelerometer::Y));
+  acc.z = vec.at(static_cast<int>(LolaEnums::Accelerometer::Z));
+  return acc;
+}
+
 sensor_msgs::msg::Imu MsgpackParser::getImu()
 {
   // Get filtered angles for gravity correction
@@ -85,6 +95,16 @@ nao_sensor_msgs::msg::FSR MsgpackParser::getFSR()
   fsr.r_foot_back_left = vec.at(static_cast<int>(LolaEnums::FSR::RFoot_RearLeft));
   fsr.r_foot_back_right = vec.at(static_cast<int>(LolaEnums::FSR::RFoot_RearRight));
   return fsr;
+}
+
+nao_sensor_msgs::msg::Gyroscope MsgpackParser::getGyroscope()
+{
+  nao_sensor_msgs::msg::Gyroscope gyr;
+  std::vector<float> vec = unpacked.at("Gyroscope").as<std::vector<float>>();
+  gyr.x = vec.at(static_cast<int>(LolaEnums::Gyroscope::X));
+  gyr.y = vec.at(static_cast<int>(LolaEnums::Gyroscope::Y));
+  gyr.z = vec.at(static_cast<int>(LolaEnums::Gyroscope::Z));
+  return gyr;
 }
 
 nao_sensor_msgs::msg::JointPositions MsgpackParser::getJointPositions()

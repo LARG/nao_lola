@@ -30,6 +30,7 @@ NaoLola::NaoLola()
         auto recvData = connection.receive();
         MsgpackParser parsed(recvData.data(), recvData.size());
 
+        accelerometer_pub->publish(parsed.getAccelerometer());
         auto imu_msg = parsed.getImu();
         imu_msg.header.stamp = this->get_clock()->now();
         imu_msg.header.frame_id = "nao";
@@ -37,6 +38,7 @@ NaoLola::NaoLola()
         angle_pub->publish(parsed.getAngle());
         buttons_pub->publish(parsed.getButtons());
         fsr_pub->publish(parsed.getFSR());
+        gyroscope_pub->publish(parsed.getGyroscope());
         joint_positions_pub->publish(parsed.getJointPositions());
         joint_stiffnesses_pub->publish(parsed.getJointStiffnesses());
         joint_temperatures_pub->publish(parsed.getJointTemperatures());
@@ -64,9 +66,12 @@ NaoLola::NaoLola()
 void NaoLola::createPublishers()
 {
   RCLCPP_DEBUG(get_logger(), "Initialise publishers");
+  accelerometer_pub = create_publisher<nao_sensor_msgs::msg::Accelerometer>(
+    "sensors/accelerometer", 10);
   angle_pub = create_publisher<nao_sensor_msgs::msg::Angle>("sensors/angle", 10);
   buttons_pub = create_publisher<nao_sensor_msgs::msg::Buttons>("sensors/buttons", 10);
   fsr_pub = create_publisher<nao_sensor_msgs::msg::FSR>("sensors/fsr", 10);
+  gyroscope_pub = create_publisher<nao_sensor_msgs::msg::Gyroscope>("sensors/gyroscope", 10);
   imu_pub = create_publisher<sensor_msgs::msg::Imu>( "sensors/imu", 10);
   joint_positions_pub = create_publisher<nao_sensor_msgs::msg::JointPositions>(
     "sensors/joint_positions", 10);

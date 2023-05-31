@@ -26,6 +26,8 @@
 #include "nao_sensor_msgs/msg/joint_temperatures.hpp"
 #include "nao_sensor_msgs/msg/joint_statuses.hpp"
 #include "nao_sensor_msgs/msg/buttons.hpp"
+#include "nao_sensor_msgs/msg/accelerometer.hpp"
+#include "nao_sensor_msgs/msg/gyroscope.hpp"
 #include "nao_sensor_msgs/msg/angle.hpp"
 #include "nao_sensor_msgs/msg/sonar.hpp"
 #include "nao_sensor_msgs/msg/fsr.hpp"
@@ -38,10 +40,12 @@ class MsgpackParser
 public:
   explicit MsgpackParser(char data[], int size);
 
+  nao_sensor_msgs::msg::Accelerometer getAccelerometer();
   sensor_msgs::msg::Imu getImu();
   nao_sensor_msgs::msg::Angle getAngle();
   nao_sensor_msgs::msg::Buttons getButtons();
   nao_sensor_msgs::msg::FSR getFSR();
+  nao_sensor_msgs::msg::Gyroscope getGyroscope();
   nao_sensor_msgs::msg::JointCurrents getJointCurrents();
   nao_sensor_msgs::msg::JointPositions getJointPositions();
   nao_sensor_msgs::msg::JointStiffnesses getJointStiffnesses();

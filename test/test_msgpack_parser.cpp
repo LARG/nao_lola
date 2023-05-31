@@ -97,6 +97,14 @@ protected:
   }
 };
 
+TEST_F(TestMsgpackParser, TestAccelerometer)
+{
+  nao_sensor_msgs::msg::Accelerometer acc = parser->getAccelerometer();
+  EXPECT_NEAR(acc.x, -3.0656251907348633, 0.000001);
+  EXPECT_NEAR(acc.y, -0.39278322458267212, 0.000001);
+  EXPECT_NEAR(acc.z, -9.3214168548583984, 0.000001);
+}
+
 TEST_F(TestMsgpackParser, TestImu)
 {
   sensor_msgs::msg::Imu imu = parser->getImu();
@@ -137,6 +145,15 @@ TEST_F(TestMsgpackParser, TestFSR)
   EXPECT_NEAR(fsr.r_foot_back_left, 0.40598109364509583, 0.000001);
   EXPECT_NEAR(fsr.r_foot_back_right, 0.086648054420948029, 0.000001);
 }
+
+TEST_F(TestMsgpackParser, TestGyroscope)
+{
+  nao_sensor_msgs::msg::Gyroscope gyr = parser->getGyroscope();
+  EXPECT_NEAR(gyr.x, -0.00026631611399352551, 0.000001);
+  EXPECT_NEAR(gyr.y, -0.001065264455974102, 0.000001);
+  EXPECT_NEAR(gyr.z, 0.001065264455974102, 0.000001);
+}
+
 
 TEST_F(TestMsgpackParser, TestJointPositions)
 {
