@@ -63,6 +63,11 @@ NaoLola::NaoLola()
     });
 }
 
+NaoLola::~NaoLola()
+{
+  connection.send(MsgpackPacker().getZeroPacked());
+}
+
 void NaoLola::createPublishers()
 {
   RCLCPP_DEBUG(get_logger(), "Initialise publishers");

@@ -79,6 +79,18 @@ std::string MsgpackPacker::getPacked()
   return packed;
 }
 
+std::string MsgpackPacker::getZeroPacked()
+{
+  msgpack::zone z;
+  std::map<std::string, msgpack::object> map;
+  auto zeros = std::make_shared<std::vector<float>>(static_cast<int>(LolaEnums::Joint::NUM_JOINTS), 0.0);
+  map.insert(std::make_pair("Stiffness", msgpack::object(zeros, z)));
+  std::stringstream buffer;
+  msgpack::pack(buffer, map);
+  std::string packed = buffer.str();
+  return packed;
+}
+
 void MsgpackPacker::setJointPositions(
   std::shared_ptr<nao_command_msgs::msg::JointPositions> jointPositions)
 {

@@ -38,6 +38,7 @@ public:
   MsgpackPacker()
   : logger(rclcpp::get_logger("msgpack packer")) {}
   std::string getPacked();
+  static std::string getZeroPacked();
 
   void setJointPositions(std::shared_ptr<nao_command_msgs::msg::JointPositions> jointPositions);
   void setJointStiffnesses(

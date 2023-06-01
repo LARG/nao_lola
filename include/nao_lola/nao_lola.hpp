@@ -52,7 +52,7 @@ class NaoLola : public rclcpp::Node
 {
 public:
   NaoLola();
-  virtual ~NaoLola() {}
+  ~NaoLola();
 
 private:
   void createPublishers();
