@@ -23,6 +23,8 @@ NaoLola::NaoLola()
   createPublishers();
   createSubscriptions();
 
+  packer = std::make_shared<MsgpackPacker>();
+
   // Start receive and send loop
   receive_thread_ = std::thread(
     [this]() {
@@ -49,16 +51,7 @@ NaoLola::NaoLola()
         battery_pub->publish(parsed.getBattery());
         robot_config_pub->publish(parsed.getRobotConfig());
 
-
-        // In mutex, copy packer in and reset it
-        // Do the pack and send outside mutex to avoid retain lock for a long time
-        std::shared_ptr<MsgpackPacker> packerCopy;
-        {
-          std::lock_guard<std::mutex> guard(packer_mutex);
-          packerCopy = packer;
-          packer = std::make_shared<MsgpackPacker>();
-        }
-        connection.send(packerCopy->getPacked());
+        connection.send(packer->getPacked());
       }
     });
 }
